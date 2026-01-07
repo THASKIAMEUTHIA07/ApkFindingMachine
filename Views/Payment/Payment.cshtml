@@ -3,31 +3,96 @@
     ViewData["Title"] = "Pembayaran";
 }
 
-<div class="container mt-4">
-    <h2>Pembayaran untuk @Model.CustomerName</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
 
-    <div class="card shadow-sm mb-3">
-        <div class="card-body">
-            <h5 class="card-title">@Model.House.Name</h5>
-            <p class="card-text">Harga: @Model.House.Price.ToString("C")</p>
-            @if(Model.Discount > 0)
-            {
-                <p class="text-success">Diskon: @Model.Discount.ToString("C")</p>
-            }
-            <p class="fw-bold">Total yang harus dibayar: @Model.Total.ToString("C")</p>
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">💳 Pembayaran</h2>
+                <p class="text-muted">Selesaikan pembayaran untuk melanjutkan booking</p>
+            </div>
+
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Detail Properti</h5>
+
+                    <div class="d-flex justify-content-between">
+                        <span>Nama Properti</span>
+                        <strong>@Model.House.Name</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <span>Harga</span>
+                        <span>@Model.House.Price.ToString("C")</span>
+                    </div>
+
+                    @if (Model.Discount > 0)
+                    {
+                        <div class="d-flex justify-content-between text-success">
+                            <span>Diskon</span>
+                            <span>- @Model.Discount.ToString("C")</span>
+                        </div>
+                    }
+
+                    <hr />
+
+                    <div class="d-flex justify-content-between fs-5">
+                        <strong>Total Bayar</strong>
+                        <strong class="text-primary">@Model.Total.ToString("C")</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Metode Pembayaran</h5>
+
+                    <form method="post">
+                        <input type="hidden" name="bookingId" value="@Model.Id" />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Pilih Metode</label>
+                            <select name="paymentMethod" class="form-select" required>
+                                <option value="">-- Pilih Metode Pembayaran --</option>
+                                <option value="Cash"> Cash</option>
+                                <option value="Transfer">Transfer Bank</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3" id="bankSection" style="display:none;">
+                            <label class="form-label fw-semibold">Pilih Bank</label>
+                            <select name="bankName" class="form-select">
+                                <option value="">-- Pilih Bank --</option>
+                                <option value="BCA">BCA</option>
+                                <option value="BRI">BRI</option>
+                                <option value="Mandiri">Mandiri</option>
+                                <option value="BNI">BNI</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-controller="House" asp-action="Index" class="btn btn-outline-secondary">
+                                ⬅ Batal
+                            </a>
+                        <div class="payment-actions d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success px-4">
+                                Bayar Sekarang
+                            </button>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <form method="post">
-        <input type="hidden" name="bookingId" value="@Model.Id" />
-        <div class="mb-3">
-            <label class="form-label">Metode Pembayaran</label>
-            <select name="paymentMethod" class="form-select" required>
-                <option value="Cash">Cash</option>
-                <option value="Transfer">Transfer</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-success">Bayar Sekarang</button>
-        <a asp-controller="House" asp-action="Index" class="btn btn-secondary">Batal</a>
-    </form>
 </div>
+
+<script>
+    const paymentSelect = document.querySelector('[name="paymentMethod"]');
+    const bankSection = document.getElementById('bankSection');
+
+    paymentSelect.addEventListener('change', function () {
+        bankSection.style.display = this.value === 'Transfer' ? 'block' : 'none';
+    });
+</script>

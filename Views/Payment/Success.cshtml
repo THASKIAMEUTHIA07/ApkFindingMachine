@@ -3,12 +3,65 @@
     ViewData["Title"] = "Pembayaran Berhasil";
 }
 
-<div class="container mt-4 text-center">
-    <h2 class="text-success">Pembayaran Berhasil!</h2>
-    <p>Nama Customer: @Model.Booking.CustomerName</p>
-    <p>Nama Properti: @Model.Booking.House.Name</p>
-    <p>Total Dibayar: @Model.PaidAmount.ToString("C")</p>
-    <p>Metode Pembayaran: @Model.PaymentMethod</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
 
-    <a asp-controller="House" asp-action="Index" class="btn btn-primary mt-3">Kembali ke Pilihan Properti</a>
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-success">Pembayaran Berhasil</h2>
+                <p class="text-muted">
+                    Terima kasih, pembayaran Anda telah kami terima.
+                </p>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-3">Detail Transaksi</h5>
+
+                    <div class="row mb-2">
+                        <div class="col-6 text-muted">Nama Customer</div>
+                        <div class="col-6 text-end fw-semibold">
+                            @Model.Booking.CustomerName
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-6 text-muted">Properti</div>
+                        <div class="col-6 text-end fw-semibold">
+                            @Model.Booking.House.Name
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-6 text-muted">Metode Pembayaran</div>
+                        <div class="col-6 text-end">
+                            <span class="badge bg-primary">
+                                @Model.PaymentMethod
+                            </span>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-6 fw-bold">Total Dibayar</div>
+                        <div class="col-6 text-end fw-bold text-success fs-5">
+                            @Model.PaidAmount.ToString("C")
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a asp-controller="House"
+                   asp-action="Index"
+                   class="btn btn-outline-primary px-4">
+                    ⬅ Kembali ke Pilihan Properti
+                </a>
+            </div>
+
+        </div>
+    </div>
 </div>

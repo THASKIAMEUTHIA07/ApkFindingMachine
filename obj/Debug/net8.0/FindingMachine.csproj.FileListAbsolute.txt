@@ -102,3 +102,4 @@ C:\Users\ThaskiaMeuthiaRamadh\Downloads\AppFinding\FindingMachine\obj\Debug\net8
 C:\Users\ThaskiaMeuthiaRamadh\Downloads\AppFinding\FindingMachine\obj\Debug\net8.0\FindingMachine.pdb
 C:\Users\ThaskiaMeuthiaRamadh\Downloads\AppFinding\FindingMachine\obj\Debug\net8.0\FindingMachine.genruntimeconfig.cache
 C:\Users\ThaskiaMeuthiaRamadh\Downloads\AppFinding\FindingMachine\obj\Debug\net8.0\ref\FindingMachine.dll
+C:\Users\ThaskiaMeuthiaRamadh\Downloads\AppFinding\FindingMachine\obj\Debug\net8.0\FindingMachine.sourcelink.json

@@ -8,6 +8,7 @@ namespace FindingMachine.Controllers
     public class PaymentController : Controller
     {
         private readonly ApplicationDbContext _context;
+
         public PaymentController(ApplicationDbContext context)
         {
             _context = context;
@@ -16,38 +17,57 @@ namespace FindingMachine.Controllers
         public IActionResult Payment(int bookingId)
         {
             var booking = _context.Bookings
-                .Include(b => b.House) // hanya load House
+                .Include(b => b.House)
                 .FirstOrDefault(b => b.Id == bookingId);
 
             if (booking == null) return NotFound();
             return View(booking);
         }
 
-        [HttpPost]
-        public IActionResult Payment(int bookingId, string paymentMethod)
+        // POST: Payment
+    [HttpPost]
+    public IActionResult Payment(int bookingId, string paymentMethod, string bankName)
+    {
+        var booking = _context.Bookings.FirstOrDefault(b => b.Id == bookingId);
+        if (booking == null) return NotFound();
+
+        var totalBayar = booking.Total - booking.Discount;
+
+        var payment = new Payment
         {
-            var booking = _context.Bookings.Find(bookingId);
-            if (booking == null) return NotFound();
+            BookingId = bookingId,
+            PaymentMethod = paymentMethod,
+            BankName = paymentMethod == "Transfer" ? bankName : null,
+            PaidAmount = totalBayar,
+            PaymentDate = DateTime.Now
+        };
 
-            var payment = new Payment
-            {
-                BookingId = bookingId,
-                PaymentMethod = paymentMethod,
-                PaidAmount = booking.Total
-            };
-
-            _context.Payments.Add(payment);
-            _context.SaveChanges();
-
-            return RedirectToAction("Success", "Payment", new { paymentId = payment.Id });
+        // LOGIC STATUS (REAL CASE)
+        if (paymentMethod == "Transfer")
+        {
+            payment.Status = "Pending";    
+            booking.Status = "Pending";
+        }
+        else
+        {
+            payment.Status = "Success";   
+            booking.Status = "Paid";
         }
 
-        public IActionResult Success(int paymentId)
+        _context.Payments.Add(payment);
+        _context.Bookings.Update(booking);
+        _context.SaveChanges();
+
+        return RedirectToAction("Success", new { id = payment.Id });
+        }
+
+        // GET: Payment/Success/5
+        public IActionResult Success(int id)
         {
             var payment = _context.Payments
                 .Include(p => p.Booking)
                     .ThenInclude(b => b.House)
-                .FirstOrDefault(p => p.Id == paymentId);
+                .FirstOrDefault(p => p.Id == id);
 
             if (payment == null) return NotFound();
             return View(payment);

@@ -13,6 +13,8 @@ namespace FindingMachine.Models
 
         public string PaymentMethod { get; set; }
         public decimal PaidAmount { get; set; }
+        public string? BankName { get; set; }  
+        public string Status { get; set; } = "Success";
         public DateTime PaymentDate { get; set; } = DateTime.Now;
     }
 }

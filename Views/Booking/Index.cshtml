@@ -1,0 +1,60 @@
+using Microsoft.AspNetCore.Mvc;
+using FindingMachine.Models;
+using System.Linq;
+
+namespace FindingMachine.Controllers
+{
+    public class HouseController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+
+        public HouseController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult Index()
+        {
+            var houses = _context.Houses.ToList();
+            return View(houses);
+        }
+
+        // GET: Book
+        public IActionResult Book(int id)
+        {
+            var house = _context.Houses.Find(id);
+            if (house == null) return NotFound();
+
+            var booking = new Booking
+            {
+                HouseId = house.Id,
+                House = house
+            };
+
+            return View(booking);
+        }
+
+        // POST: Book
+        [HttpPost]
+        public IActionResult Book(Booking booking)
+        {
+            if (!ModelState.IsValid)
+            {
+                booking.House = _context.Houses.Find(booking.HouseId);
+                return View(booking);
+            }
+
+            var house = _context.Houses.Find(booking.HouseId);
+            if (house == null) return NotFound();
+
+            booking.Discount = house.Price > 1_000_000 ? house.Price * 0.1m : 0;
+            booking.Total = house.Price - booking.Discount;
+            booking.Status = "Pending";
+
+            _context.Bookings.Add(booking);
+            _context.SaveChanges();
+
+            return RedirectToAction("Payment", "Payment", new { bookingId = booking.Id });
+        }
+    }
+}
