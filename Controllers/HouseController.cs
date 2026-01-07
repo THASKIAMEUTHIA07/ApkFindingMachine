@@ -26,7 +26,7 @@ namespace FindingMachine.Controllers
             var house = _context.Houses.Find(id);
             if (house == null) return NotFound();
 
-            return View(house); // ✅ View pakai @model House
+            return View(house); 
         }
 
         // PROSES BOOKING (POST)
