@@ -1,0 +1,14 @@
+@model FindingMachine.Models.Payment
+@{
+    ViewData["Title"] = "Pembayaran Berhasil";
+}
+
+<div class="container mt-4 text-center">
+    <h2 class="text-success">Pembayaran Berhasil!</h2>
+    <p>Nama Customer: @Model.Booking.CustomerName</p>
+    <p>Nama Properti: @Model.Booking.House.Name</p>
+    <p>Total Dibayar: @Model.PaidAmount.ToString("C")</p>
+    <p>Metode Pembayaran: @Model.PaymentMethod</p>
+
+    <a asp-controller="House" asp-action="Index" class="btn btn-primary mt-3">Kembali ke Pilihan Properti</a>
+</div>

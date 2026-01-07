@@ -1,0 +1,28 @@
+@model IEnumerable<FindingMachine.Models.House>
+@{
+    ViewData["Title"] = "Daftar Properti";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Pilihan Properti</h2>
+    <div class="row">
+        @foreach (var house in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <img src="@house.ImageUrl" 
+                         class="card-img-top" 
+                         alt="@house.Name"
+                         style="height: 200px; object-fit: cover;"
+                         onerror="this.onerror=null; this.src='/images/placeholder.jpg';" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@house.Name</h5>
+                        <p class="card-text"><strong>Lokasi:</strong> @house.Location</p>
+                        <p class="card-text"><strong>Harga:</strong> @house.Price.ToString("C")</p>
+                        <a asp-action="Book" asp-route-id="@house.Id" class="btn btn-primary mt-auto">Book Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

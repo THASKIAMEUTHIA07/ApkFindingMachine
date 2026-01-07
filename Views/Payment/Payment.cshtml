@@ -1,0 +1,33 @@
+@model FindingMachine.Models.Booking
+@{
+    ViewData["Title"] = "Pembayaran";
+}
+
+<div class="container mt-4">
+    <h2>Pembayaran untuk @Model.CustomerName</h2>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h5 class="card-title">@Model.House.Name</h5>
+            <p class="card-text">Harga: @Model.House.Price.ToString("C")</p>
+            @if(Model.Discount > 0)
+            {
+                <p class="text-success">Diskon: @Model.Discount.ToString("C")</p>
+            }
+            <p class="fw-bold">Total yang harus dibayar: @Model.Total.ToString("C")</p>
+        </div>
+    </div>
+
+    <form method="post">
+        <input type="hidden" name="bookingId" value="@Model.Id" />
+        <div class="mb-3">
+            <label class="form-label">Metode Pembayaran</label>
+            <select name="paymentMethod" class="form-select" required>
+                <option value="Cash">Cash</option>
+                <option value="Transfer">Transfer</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Bayar Sekarang</button>
+        <a asp-controller="House" asp-action="Index" class="btn btn-secondary">Batal</a>
+    </form>
+</div>

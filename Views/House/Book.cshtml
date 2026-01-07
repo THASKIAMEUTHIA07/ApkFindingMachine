@@ -1,0 +1,41 @@
+@model FindingMachine.Models.House
+@{
+    ViewData["Title"] = "Booking Properti";
+}
+
+<div class="container mt-4">
+    <h2>Booking: @Model.Name</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.ImageUrl" 
+                 class="img-fluid mb-3 rounded" 
+                 alt="@Model.Name"
+                 style="height: 300px; object-fit: cover; width: 100%;"
+                 onerror="this.onerror=null; this.src='/images/placeholder.jpg';" />
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Lokasi:</strong> @Model.Location</li>
+                <li class="list-group-item"><strong>Harga:</strong> @Model.Price.ToString("C")</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <form method="post">
+                <input type="hidden" name="houseId" value="@Model.Id" />
+                <div class="mb-3">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" name="customerName" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nomor Telepon</label>
+                    <input type="text" name="phone" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-success">Lanjut ke Pemesanan</button>
+                <a asp-action="Index" class="btn btn-secondary">Kembali ke Daftar</a>
+            </form>
+        </div>
+    </div>
+</div>
